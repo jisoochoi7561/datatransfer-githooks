@@ -33,7 +33,7 @@ s.sendto(("receive "+file_name).encode(),(host,port))
 #
 # receiver exist msg
 
-data, addr = s.recvfrom(4096)
+data, addr = s.recvfrom(1024)
 receiver_exist_msg=data.decode('utf-8')
 # print("received message: "+receiver_exist_msg)
 
@@ -44,11 +44,11 @@ receiver_exist_msg=data.decode('utf-8')
 if receiver_exist_msg == 'Exist':
 
     to_write = open("Received_script.txt", "wb")
-    data, addr = s.recvfrom(4096)
+    data, addr = s.recvfrom(1024)
     recv_count = int(data.decode('utf-8'))
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
-        data, addr = s.recvfrom(4096)
+        data, addr = s.recvfrom(1024)
         to_write.write(data)
         recv_count-=1
 
@@ -67,7 +67,7 @@ if receiver_exist_msg == 'Exist':
 #
 
 # Do not modify the code (below)
-rec_md5_hash, addr = s.recvfrom(4096)
+rec_md5_hash, addr = s.recvfrom(1024)
 
 if rec_md5_hash.decode('utf8') == check_md5_hash('Received_script.txt'): #
     print("True")
