@@ -46,9 +46,7 @@ def cal_check_sum(data):
 	b_udp_length = bytes([8+len(data.encode('utf-8'))])
 	print('b_udp_length')
 	print(b_udp_length)
-	udp_length = b_udp_length.encode('utf-8')
-	print('udp_length')
-	print(udp_length)
+
 
 	src_port = 8000
 	b_src_port = bytes([src_port])
@@ -57,12 +55,11 @@ def cal_check_sum(data):
 	b_dst_port = bytes([dst_port])
 
 	b_length = bytes([8+len(data.encode('utf-8'))])
-	length = b_length.encode('utf-8')
 
 	b_check_sum = bytes([0,0])
-	check_sum = b_check_sum.decode('utf-8')
 
-	pseudo_header = src_ip+dst_ip+zeroes+protocol+udp_length
+	pseudo_header =  struct.pack('iicch'b_src_ip,b_dst_ip,b_zeroes,b_protocol,b_udp_length)
+	print(pseudo_header)
 	udp_header = src_port+dst_port+length+check_sum
 
 	packet = pseudo_header+udp_header+data.decode('utf-8')
