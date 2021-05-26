@@ -43,7 +43,7 @@ def cal_check_sum(data):
 	print(b_protocol)
 
 
-	b_udp_length = bytes([8+len(data)])
+	b_udp_length = bytes([len(data)])
 	print('b_udp_length')
 	print(b_udp_length)
 
