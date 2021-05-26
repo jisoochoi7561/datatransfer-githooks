@@ -3,6 +3,7 @@ import os
 import sys
 import hashlib
 import math
+import struct
 host = ("34.64.149.188")
 port = 8000
 
@@ -25,28 +26,22 @@ def cal_check_sum(data):
 	b_src_ip = bytes(map(int, src_ip.split('.')))
 	print("b_src_ip")
 	print(b_src_ip)
-	src_ip = b_src_ip.decode()
-	print("src_ip")
-	print(src_ip)
+
 	dst_ip = '192.160.0.2'
 	b_dst_ip = bytes(map(int,dst_ip.split('.')))
 	print("b_dst_ip")
 	print(b_dst_ip)
-	dst_ip = b_src_ip.decode('utf-8')
-	print("dst_ip")
-	print(dst_ip)
+
 	zeroes = 0
 	b_zeroes = bytes([zeroes])
 	print("b_zeroes")
 	print(b_zeroes)
-	zeroes = b_zeroes.decode('utf-8')
-	print("zeroes")
-	print(zeroes)
+
 	protocol = 17
 	b_protocol = bytes([protocol])
 	print("b_protocol")
 	print(b_protocol)
-	protocol = b_protocol.decode('utf-8')
+
 
 	b_udp_length = bytes([8+len(data.encode('utf-8'))])
 	print('b_udp_length')
@@ -57,11 +52,9 @@ def cal_check_sum(data):
 
 	src_port = 8000
 	b_src_port = bytes([src_port])
-	src_port = b_src_port.decode('utf-8')
 
 	dst_port = 53109
 	b_dst_port = bytes([dst_port])
-	dst_port = b_dst_port.decode('utf-8')
 
 	b_length = bytes([8+len(data.encode('utf-8'))])
 	length = b_length.encode('utf-8')

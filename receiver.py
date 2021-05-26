@@ -2,6 +2,7 @@ import socket
 import os
 import sys
 import hashlib
+import struct
 
 def check_md5_hash(path):
     f = open(path, 'rb')
