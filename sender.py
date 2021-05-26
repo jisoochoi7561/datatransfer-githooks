@@ -43,14 +43,14 @@ def cal_check_sum(data):
 	print(b_protocol)
 
 
-	b_udp_length = (len(data)+8).to_bytes(2,'big')
+	b_udp_length = struct.pack('>H',(len(data)+8))
 	print('b_udp_length')
 	print(b_udp_length)
 
 
-	src_port = 8000
+	src_port = struct.pack('>H',8000)
 
-	dst_port = 53109
+	dst_port = struct.pack('>H',53109)
 
 	b_length = b_udp_length
 
