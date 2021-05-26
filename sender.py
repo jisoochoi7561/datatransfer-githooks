@@ -25,7 +25,7 @@ def cal_check_sum(data):
 	src_ip = '192.168.0.4'
 	b_src_ip = bytes(map(int, src_ip.split('.')))
 	print("b_src_ip")
-	print(b_src_ip.decode("utf-8"))
+	print(b_src_ip.decode())
 
 	dst_ip = '192.160.0.2'
 	b_dst_ip = bytes(map(int,dst_ip.split('.')))
