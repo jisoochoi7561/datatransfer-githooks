@@ -12,17 +12,13 @@ def check_md5_hash(path):
 file_name = input()
 # print("filename is "+ file_name)
 
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setblocking(0)
-    s.settimeout(15)
-except socket.error:
-    print("failed to create socket")
-    sys.exit()
 
-host = "localhost"
+
+host = "0.0.0.0"
 port = 8000
 
+sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+sock.bind((UDP_IP,UDP_PORT))
 #
 # send to sender
 s.sendto(("receive "+file_name).encode(),(host,port))
