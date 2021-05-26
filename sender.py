@@ -8,7 +8,7 @@ port = 8000
 
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.bind((host,port))
+	s.bind(("0.0.0.0", 8000))
 except socket.error:
 	print("failed to create socket")
 	sys.exit()

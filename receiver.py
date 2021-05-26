@@ -14,11 +14,10 @@ file_name = input()
 
 
 
-host = "0.0.0.0"
+host = ("34.64.149.188")
 port = 8000
 
-sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-sock.bind((UDP_IP,UDP_PORT))
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 #
 # send to sender
 s.sendto(("receive "+file_name).encode(),(host,port))
