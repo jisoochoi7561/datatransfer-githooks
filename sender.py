@@ -56,6 +56,8 @@ def cal_check_sum(data):
 
 	b_check_sum = bytes([0,0])
 
+	print(b_src_ip+b_dst_ip)
+
 	pseudo_header =  struct.pack('iicch',b_src_ip,b_dst_ip,b_zeroes,b_protocol,b_udp_length)
 	print(pseudo_header)
 	udp_header = src_port+dst_port+length+check_sum
