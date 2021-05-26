@@ -49,10 +49,8 @@ def cal_check_sum(data):
 
 
 	src_port = 8000
-	b_src_port = bytes([src_port])
 
 	dst_port = 53109
-	b_dst_port = bytes([dst_port])
 
 	b_length = bytes([8+len(data)])
 
