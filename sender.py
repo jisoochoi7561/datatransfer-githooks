@@ -43,7 +43,7 @@ def cal_check_sum(data):
 	print(b_protocol)
 
 
-	b_udp_length = bytes([8+len(data.encode('utf-8'))])
+	b_udp_length = bytes([8+len(data)])
 	print('b_udp_length')
 	print(b_udp_length)
 
@@ -54,7 +54,7 @@ def cal_check_sum(data):
 	dst_port = 53109
 	b_dst_port = bytes([dst_port])
 
-	b_length = bytes([8+len(data.encode('utf-8'))])
+	b_length = bytes([8+len(data)])
 
 	b_check_sum = bytes([0,0])
 
