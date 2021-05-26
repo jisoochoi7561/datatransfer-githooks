@@ -65,7 +65,8 @@ def cal_check_sum(data):
 	packet = pseudo_header+udp_header+data
 
 	print(packet)
-	return packet.encode('utf-8')
+	print(packet.decode('utf-8'))
+	return packet.decode('utf-8')
 def sender_send(file_name):
 	#
 	# Implement in the order mentioned in the silde and video.
