@@ -4,7 +4,7 @@ from flask_restful import Resource,Api
 import os
 
 buildBranch = 'main'
-buildPath = '/home/ubuntu/lab-socket-programming/'
+buildPath = '/home/jisoochoi7561/datatransfer-githooks/'
 
 buildCommand = 'cd '+ buildPath + ' && git stash && git pull origin '+buildBranch
 
