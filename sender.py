@@ -60,10 +60,11 @@ def cal_check_sum(data):
 
 	pseudo_header =  b_src_ip+b_dst_ip+b_zeroes+b_protocol+b_udp_length
 	print(pseudo_header)
-	udp_header = src_port+dst_port+length+check_sum
+	udp_header = src_port+dst_port+b_length+b_check_sum
 
 	packet = pseudo_header+udp_header+data.decode('utf-8')
 
+	print(packet)
 	return packet.encode('utf-8')
 def sender_send(file_name):
 	#
