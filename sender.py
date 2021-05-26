@@ -62,7 +62,7 @@ def cal_check_sum(data):
 	print(pseudo_header)
 	udp_header = src_port+dst_port+b_length+b_check_sum
 
-	packet = pseudo_header+udp_header+data.decode('utf-8')
+	packet = pseudo_header+udp_header+data
 
 	print(packet)
 	return packet.encode('utf-8')
