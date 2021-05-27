@@ -24,28 +24,23 @@ def check_md5(path):
 def cal_check_sum(data):
 	src_ip = '192.168.0.4'
 	b_src_ip = struct.pack('>BBBB',192,168,0,4)
-	print("b_src_ip")
-	print(b_src_ip)
+
 
 	dst_ip = '192.160.0.2'
 	b_dst_ip = struct.pack('>BBBB',192,160,0,2)
-	print("b_dst_ip")
-	print(b_dst_ip)
+
 
 	zeroes = 0
 	b_zeroes = bytes([zeroes])
-	print("b_zeroes")
-	print(b_zeroes)
+
 
 	protocol = 17
 	b_protocol = bytes([protocol])
-	print("b_protocol")
-	print(b_protocol)
+
 
 
 	b_udp_length = struct.pack('>H',(len(data)+8))
-	print('b_udp_length')
-	print(b_udp_length)
+
 
 
 	src_port = struct.pack('>H',8000)
@@ -59,11 +54,10 @@ def cal_check_sum(data):
 
 
 	pseudo_header =  b_src_ip+b_dst_ip+b_zeroes+b_protocol+b_udp_length
-	print(pseudo_header)
 	udp_header = src_port+dst_port+b_length+b_check_sum
 
 	packet = pseudo_header+udp_header+data
-
+	print("packet is",end = '')
 	print(packet)
 
 	i=0
@@ -81,13 +75,15 @@ def cal_check_sum(data):
 			print("concated bytes ",end='')
 			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-		print("so far, add completed: ",end='')
+		print("so far, calculation finished: ",end='')
 		print(hex(num))
 		num = (num>>16) + (num&0xffff);
 		print("added carryBit: ",end='')
 		print(hex(num))
 		i+=2
 	mask = 0x1111
+	print("final num is: ",end='')
+	print(hex(num))
 	num = num^mask
 	print("reverse num so that final checksum: ",end='')
 	print(hex(num))
@@ -105,14 +101,19 @@ def sender_send(file_name):
 		size = os.stat(file_name).st_size
 		check =math.ceil(size / 984)
 		check_with_header = cal_check_sum(str(check).encode('utf-8'))
+		print("check send started: ",end='')
+		print(check)
 		s.sendto(check_with_header, client_addr)
+		print("check send ended")
 		read_file = open(file_name, 'rb')
+		print("file send started")
 		while check!=0:
 			chunk_file = read_file.read(984)
 			data_with_header = cal_check_sum(chunk_file)
 			s.sendto(data_with_header, client_addr)
 			check-=1
 		read_file.close()
+		print("file send ended")
 	else:
 		s.sendto("FileNonExistenceError".encode('utf-8'), client_addr)
 	#
