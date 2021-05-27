@@ -60,9 +60,9 @@ receiver_exist_msg=data.decode('utf-8')
 if receiver_exist_msg == 'Exist':
 
     to_write = open("Received_script.txt", "wb")
-    checksum, addr = s.recvfrom(1024)
+    checksum, addr = s.recvfrom(2048)
     checksum = int(checksum.decode('utf-8'))
-    data, addr = s.recvfrom(1024)
+    data, addr = s.recvfrom(2048)
     data = check_checksum(data,checksum)
     recv_count = int(data.decode('utf-8'))
     print("recv_count is ",end = '')
@@ -70,9 +70,9 @@ if receiver_exist_msg == 'Exist':
     print("====================================")
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
-        checksum, addr = s.recvfrom(1024)
+        checksum, addr = s.recvfrom(2048)
         checksum = int(checksum.decode('utf-8'))
-        data, addr = s.recvfrom(1024)
+        data, addr = s.recvfrom(2048)
         data = check_checksum(data,checksum)
         to_write.write(data)
         recv_count-=1
@@ -92,7 +92,7 @@ if receiver_exist_msg == 'Exist':
 #
 
 # Do not modify the code (below)
-rec_md5_hash, addr = s.recvfrom(1024)
+rec_md5_hash, addr = s.recvfrom(2048)
 
 if rec_md5_hash.decode('utf8') == check_md5_hash('Received_script.txt'): #
     print("True")
