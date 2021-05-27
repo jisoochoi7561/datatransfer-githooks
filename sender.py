@@ -56,7 +56,8 @@ def cal_check_sum(data):
 
 	pseudo_header =  b_src_ip+b_dst_ip+b_zeroes+b_protocol+b_udp_length
 	udp_header = src_port+dst_port+b_length+b_check_sum
-
+	print(len(pseudo_header))
+	print(len(udp_header))
 	packet = pseudo_header+udp_header+data
 	print("packet is",end = '')
 	print(packet)
