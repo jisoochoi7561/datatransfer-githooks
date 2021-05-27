@@ -16,27 +16,13 @@ def check_checksum(rowdata,checksum):
     num = 0
     while i<len(packet):
         if i+1>=len(packet):
-            print("There is only one last byte ",end='')
-            print(format(ord(packet.hex()[i]),"x"))
             num += int(format(ord(packet.hex()[i]),"x"),16)
         else:
-            print("first byte ",end='')
-            print(format(ord(packet.hex()[i]),"x"))
-            print("second byte ",end='')
-            print(format(ord(packet.hex()[i+1]),"x"))
-            print("concated bytes ",end='')
-            print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
             num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-        print("so far, add completed: ",end='')
-        print(hex(num))
         num = (num>>16) + (num&0xffff);
-        print("added carryBit: ",end='')
-        print(hex(num))
         i+=2
     mask = 0x1111
     num = num^mask
-    print("reverse num so that final checksum: ",end='')
-    print(hex(num))
     print("recievd checksum ",end='')
     print(hex(checksum))
     print("calculated checksum ",end='')
@@ -79,6 +65,9 @@ if receiver_exist_msg == 'Exist':
     data, addr = s.recvfrom(1024)
     data = check_checksum(data,checksum)
     recv_count = int(data.decode('utf-8'))
+    print("recv_count is ",end = '')
+    print(recv_count)
+    print("====================================")
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
         checksum, addr = s.recvfrom(1024)
