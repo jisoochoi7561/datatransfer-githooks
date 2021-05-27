@@ -93,7 +93,7 @@ def cal_check_sum(data):
 	print(hex(num))
 	b_check_sum = struct.pack('>H',num)
 	# send checksum
-	s.sendto(b_check_sum, client_addr)
+	s.sendto(str(num).encode('utf-8'), client_addr)
 	udp_header = src_port+dst_port+b_length+b_check_sum
 	packet = pseudo_header+udp_header+data
 	return packet

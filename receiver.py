@@ -37,9 +37,8 @@ def check_checksum(rowdata,checksum):
         num = num^mask
         print("reverse num so that final checksum:")
         print(hex(num))
-        b_check_sum = struct.unpack('>H',checksum)
         print("recievd checksum")
-        print(hex(b_check_sum))
+        print(hex(checksum))
         print("calculated checksum")
         print(hex(num))
         return rowdata[20:]
@@ -76,12 +75,14 @@ if receiver_exist_msg == 'Exist':
 
     to_write = open("Received_script.txt", "wb")
     checksum, addr = s.recvfrom(1024)
+    checksum = int(checksum.decode('utf-8'))
     data, addr = s.recvfrom(1024)
     data = check_checksum(data,checksum)
     recv_count = int(data.decode('utf-8'))
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
         checksum, addr = s.recvfrom(1024)
+        checksum = int(checksum.decode('utf-8'))
         data, addr = s.recvfrom(1024)
         data = check_checksum(data,checksum)
         to_write.write(data)
