@@ -33,15 +33,15 @@ def check_checksum(rowdata,checksum):
         print("added carryBit: ",end='')
         print(hex(num))
         i+=2
-        mask = 0x1111
-        num = num^mask
-        print("reverse num so that final checksum: ",end='')
-        print(hex(num))
-        print("recievd checksum ",end='')
-        print(hex(checksum))
-        print("calculated checksum ",end='')
-        print(hex(num))
-        return rowdata[20:]
+    mask = 0x1111
+    num = num^mask
+    print("reverse num so that final checksum: ",end='')
+    print(hex(num))
+    print("recievd checksum ",end='')
+    print(hex(checksum))
+    print("calculated checksum ",end='')
+    print(hex(num))
+    return rowdata[20:]
 
 
 file_name = input()
