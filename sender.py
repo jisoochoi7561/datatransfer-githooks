@@ -83,7 +83,7 @@ def cal_check_sum(data):
 		print("added carryBit: ",end='')
 		print(hex(num))
 		i+=2
-	mask = 0x1111
+	mask = 0b1111
 	print("final num is: ",end='')
 	print(hex(num))
 	num = num^mask
