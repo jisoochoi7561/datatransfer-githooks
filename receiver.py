@@ -16,7 +16,8 @@ def check_checksum(rowdata,checksum):
     num = 0
     while i<len(packet):
         if i+1>=len(packet):
-            num += int(format(ord(packet.hex()[i]),"x"),16)
+            pass
+            # num += int(format(ord(packet.hex()[i]),"x"),16)
         else:
             num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
         num = (num>>16) + (num&0xffff);

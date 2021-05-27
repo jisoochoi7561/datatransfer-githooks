@@ -64,9 +64,10 @@ def cal_check_sum(data):
 	num = 0
 	while i<len(packet):
 		if i+1>=len(packet):
-			print("There is only one last byte ",end='')
-			print(format(ord(packet.hex()[i]),"x"))
-			num += int(format(ord(packet.hex()[i]),"x"),16)
+			pass
+			#print("There is only one last byte ",end='')
+			#print(format(ord(packet.hex()[i]),"x"))
+			#num += int(format(ord(packet.hex()[i]),"x"),16)
 		else:
 			print("first byte ",end='')
 			print(format(ord(packet.hex()[i]),"x"))
