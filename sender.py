@@ -4,8 +4,7 @@ import sys
 import hashlib
 import math
 import struct
-host = ("34.64.149.188")
-port = 8000
+
 
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
