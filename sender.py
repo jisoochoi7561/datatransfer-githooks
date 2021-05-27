@@ -23,12 +23,12 @@ def check_md5(path):
 
 def cal_check_sum(data):
 	src_ip = '192.168.0.4'
-	b_src_ip = bytes(map(int, src_ip.split('.')))
+	b_src_ip = struct.pack('>BBBB',192,168,0,4)
 	print("b_src_ip")
-	print(b_src_ip.decode())
+	print(b_src_ip)
 
 	dst_ip = '192.160.0.2'
-	b_dst_ip = bytes(map(int,dst_ip.split('.')))
+	b_dst_ip = struct.pack('>BBBB',192,160,0,2)
 	print("b_dst_ip")
 	print(b_dst_ip)
 
@@ -65,8 +65,38 @@ def cal_check_sum(data):
 	packet = pseudo_header+udp_header+data
 
 	print(packet)
-	print(packet.decode('utf-8'))
-	return packet.decode('utf-8')
+
+	i=0
+	num = 0
+	while i<len(packet):
+		if i+1>=len(packet):
+			print("There is only one last byte")
+			print(format(ord(packet.hex()[i]),"x"))
+			num += int(format(ord(packet.hex()[i]),"x"),16)
+		else:
+			print("first byte")
+			print(format(ord(packet.hex()[i]),"x"))
+			print("second byte")
+			print(format(ord(packet.hex()[i+1]),"x"))
+			print("concated bytes")
+			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
+			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
+		print("so far, add completed:")
+		print(hex(num))
+		num = (num>>16) + (num&0xffff);
+		print("added carryBit:")
+		print(hex(num))
+		i+=2
+	mask = 0x1111
+	num = num^mask
+	print("reverse num so that final checksum:")
+	print(hex(num))
+	b_check_sum = struct.pack('>H',num)
+	# send checksum
+	# s.sendto(b_check_sum, client_addr)
+	udp_header = src_port+dst_port+b_length+b_check_sum
+	packet = pseudo_header+udp_header+data
+	return packet
 def sender_send(file_name):
 	#
 	# Implement in the order mentioned in the silde and video.

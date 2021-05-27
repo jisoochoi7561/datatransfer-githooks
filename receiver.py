@@ -10,6 +10,37 @@ def check_md5_hash(path):
     md5_hash = hashlib.md5(data).hexdigest()
     return md5_hash
 
+def check_checksum(rowdata,checksum):
+    packet = rowdata[:18]+bytes([0,0])+rowdata[20:]
+    i=0
+	num = 0
+	while i<len(packet):
+		if i+1>=len(packet):
+			print("There is only one last byte")
+			print(format(ord(packet.hex()[i]),"x"))
+			num += int(format(ord(packet.hex()[i]),"x"),16)
+		else:
+			print("first byte")
+			print(format(ord(packet.hex()[i]),"x"))
+			print("second byte")
+			print(format(ord(packet.hex()[i+1]),"x"))
+			print("concated bytes")
+			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
+			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
+		print("so far, add completed:")
+		print(hex(num))
+		num = (num>>16) + (num&0xffff);
+		print("added carryBit:")
+		print(hex(num))
+		i+=2
+	mask = 0x1111
+	num = num^mask
+	print("reverse num so that final checksum:")
+	print(hex(num))
+	b_check_sum = struct.pack('>H',num)
+    return rowdata[20:]
+
+
 file_name = input()
 # print("filename is "+ file_name)
 
@@ -44,7 +75,9 @@ if receiver_exist_msg == 'Exist':
     recv_count = int(data.decode('utf-8'))
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
+        checksum, addr = s.recvfrom(1024)
         data, addr = s.recvfrom(1024)
+        data = check_checksum(data,checksum)
         to_write.write(data)
         recv_count-=1
 
