@@ -16,30 +16,30 @@ def check_checksum(rowdata,checksum):
     num = 0
     while i<len(packet):
         if i+1>=len(packet):
-            print("There is only one last byte")
+            print("There is only one last byte ",end='')
             print(format(ord(packet.hex()[i]),"x"))
             num += int(format(ord(packet.hex()[i]),"x"),16)
         else:
-            print("first byte")
+            print("first byte ",end='')
             print(format(ord(packet.hex()[i]),"x"))
-            print("second byte")
+            print("second byte ",end='')
             print(format(ord(packet.hex()[i+1]),"x"))
-            print("concated bytes")
+            print("concated bytes ",end='')
             print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
             num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-        print("so far, add completed:")
+        print("so far, add completed: ",end='')
         print(hex(num))
         num = (num>>16) + (num&0xffff);
-        print("added carryBit:")
+        print("added carryBit: ",end='')
         print(hex(num))
         i+=2
         mask = 0x1111
         num = num^mask
-        print("reverse num so that final checksum:")
+        print("reverse num so that final checksum: ",end='')
         print(hex(num))
-        print("recievd checksum")
+        print("recievd checksum ",end='')
         print(hex(checksum))
-        print("calculated checksum")
+        print("calculated checksum ",end='')
         print(hex(num))
         return rowdata[20:]
 
