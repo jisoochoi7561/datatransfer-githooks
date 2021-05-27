@@ -11,6 +11,8 @@ def check_md5_hash(path):
     return md5_hash
 
 def check_checksum(rowdata,checksum):
+    print("received: ")
+    print(rowdata)
     packet = rowdata[:18]+bytes([0,0])+rowdata[20:]
     i=0
     num = 0
