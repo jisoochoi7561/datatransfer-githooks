@@ -13,32 +13,36 @@ def check_md5_hash(path):
 def check_checksum(rowdata,checksum):
     packet = rowdata[:18]+bytes([0,0])+rowdata[20:]
     i=0
-	num = 0
-	while i<len(packet):
-		if i+1>=len(packet):
-			print("There is only one last byte")
-			print(format(ord(packet.hex()[i]),"x"))
-			num += int(format(ord(packet.hex()[i]),"x"),16)
-		else:
-			print("first byte")
-			print(format(ord(packet.hex()[i]),"x"))
-			print("second byte")
-			print(format(ord(packet.hex()[i+1]),"x"))
-			print("concated bytes")
-			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
-			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-		print("so far, add completed:")
-		print(hex(num))
-		num = (num>>16) + (num&0xffff);
-		print("added carryBit:")
-		print(hex(num))
-		i+=2
-	mask = 0x1111
-	num = num^mask
-	print("reverse num so that final checksum:")
-	print(hex(num))
-	b_check_sum = struct.pack('>H',num)
-    return rowdata[20:]
+    num = 0
+    while i<len(packet):
+        if i+1>=len(packet):
+            print("There is only one last byte")
+            print(format(ord(packet.hex()[i]),"x"))
+            num += int(format(ord(packet.hex()[i]),"x"),16)
+        else:
+            print("first byte")
+            print(format(ord(packet.hex()[i]),"x"))
+            print("second byte")
+            print(format(ord(packet.hex()[i+1]),"x"))
+            print("concated bytes")
+            print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
+            num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
+        print("so far, add completed:")
+        print(hex(num))
+        num = (num>>16) + (num&0xffff);
+        print("added carryBit:")
+        print(hex(num))
+        i+=2
+        mask = 0x1111
+        num = num^mask
+        print("reverse num so that final checksum:")
+        print(hex(num))
+        b_check_sum = struct.unpack('>H',checksum)
+        print("recievd checksum")
+        print(hex(b_check_sum))
+        print("calculated checksum")
+        print(hex(num))
+        return rowdata[20:]
 
 
 file_name = input()
@@ -71,7 +75,9 @@ receiver_exist_msg=data.decode('utf-8')
 if receiver_exist_msg == 'Exist':
 
     to_write = open("Received_script.txt", "wb")
+    checksum, addr = s.recvfrom(1024)
     data, addr = s.recvfrom(1024)
+    data = check_checksum(data,checksum)
     recv_count = int(data.decode('utf-8'))
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
