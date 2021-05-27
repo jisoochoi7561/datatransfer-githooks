@@ -21,7 +21,7 @@ def check_checksum(rowdata,checksum):
             num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
         num = (num>>16) + (num&0xffff);
         i+=2
-    mask = 0b1111
+    mask = 0b1111111111111111
     num = num^mask
     print("recievd checksum ",end='')
     print(hex(checksum))
