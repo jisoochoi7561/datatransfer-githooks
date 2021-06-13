@@ -102,14 +102,16 @@ def sender_send(file_name):
 	if os.path.isfile(file_name):
 		size = os.stat(file_name).st_size
 		my_check = math.ceil(size / 981)
-		checksum_num,check_with_header = cal_check_sum(str(my_check).encode('utf-8'));stop_and_wait(str(checksum_num).encode('utf-8'), client_addr);
-		stop_and_wait(check_with_header, client_addr)
+		checksum_num,check_with_header = cal_check_sum(str(my_check).encode('utf-8'));
+		stop_and_wait(buffer_frame_num.encode()+str(checksum_num).encode('utf-8'), client_addr);
+		stop_and_wait(buffer_frame_num.encode()+check_with_header, client_addr)
 		read_file = open(file_name, 'rb')
 		print("file send started")
 		while my_check!=0:
 			chunk_file = read_file.read(981)
-			checksum_tosend,data_with_header = cal_check_sum(chunk_file);actual_data=buffer_frame_num.encode()+data_with_header;
-			stop_and_wait(str(checksum_tosend).encode('utf-8'), client_addr);
+			checksum_tosend,data_with_header = cal_check_sum(chunk_file);
+			actual_data=buffer_frame_num.encode()+data_with_header;
+			stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), client_addr);
 			stop_and_wait(actual_data, client_addr)
 			my_check-=1
 		read_file.close()
