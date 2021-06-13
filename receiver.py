@@ -59,7 +59,7 @@ def stop_and_wait():
         else:
             s.sendto(ack.encode(), (host, port))
             return False,rowdata
-    except s.timeout:
+    except socket.timeout:
         s.sendto('NAK'.encode(),(host,port))
         return stop_and_wait()
 
