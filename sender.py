@@ -85,16 +85,16 @@ def sender_send(file_name):
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
-		check=math.ceil(size / 981)
-		checksum_num,check_with_header = cal_check_sum(str(check).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
+		my_check = math.ceil(size / 981)
+		checksum_num,check_with_header = cal_check_sum(str(my_check).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
 		s.sendto(check_with_header, client_addr)
 		read_file = open(file_name, 'rb')
 		print("file send started")
-		while check!=0:
+		while my_check!=0:
 			chunk_file = read_file.read(981)
 			checksum_tosend,data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;s.sendto(str(checksum_tosend).encode('utf-8'), client_addr);
 			s.sendto(actual_data, client_addr)
-			check-=1
+			my_check-=1
 		read_file.close()
 		print("file send ended")
 	else:
