@@ -99,7 +99,7 @@ def sender_send(file_name):
 			data_with_header = cal_check_sum(chunk_file)
 			print("sizeofframe_num")
 			print(len(frame_num.encode('utf-8'))
-			actual_frame = frame_num.encode('utf-8')+data_with_header
+			actual_frame = data_with_header
 			s.sendto(actual_frame, client_addr)
 			check-=1
 		read_file.close()
