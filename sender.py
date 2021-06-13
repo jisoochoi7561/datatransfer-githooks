@@ -28,6 +28,7 @@ def stop_and_wait(data,address):
 			print("NAK received: resend")
 			stop_and_wait(data,address)
 		else:
+			print("data transfer succeeded","buffer_frame_num",buffer_frame_num,"received ack",received_ack)
 			if buffer_frame_num == '000' and received_ack == '001':
 				buffer_frame_num='001'
 			elif buffer_frame_num == '001' and received_ack == '000':
@@ -35,11 +36,7 @@ def stop_and_wait(data,address):
 	except socket.timeout:
 		print("time error: resend")
 		stop_and_wait(data,address)
-def check_md5(path):
-	f = open(path, 'rb')
-	data = f.read()
-	md5_hash = hashlib.md5(data).hexdigest()
-	return md5_hash
+
 
 def cal_check_sum(data):
 	src_ip = '192.168.0.4'
@@ -124,6 +121,7 @@ def sender_send(file_name):
 	# Do not modify the code (below)
 
 if __name__ == "__main__":
+	print("hello world")
 	try:
 		data, client_addr = s.recvfrom(1024)
 	except ConnectionResetError:
