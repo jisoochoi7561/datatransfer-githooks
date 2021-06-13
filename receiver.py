@@ -43,10 +43,10 @@ file_name = input()
 host = ("34.64.149.188")
 port = 8000
 
-s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10);
 #
 # send to sender
-s.sendto(("receive "+file_name).encode(),(host,port))
+s.sendto((input()).encode(),(host,port))
 # print("sended message: receive "+file_name)
 # "receive " + file_name
 #
