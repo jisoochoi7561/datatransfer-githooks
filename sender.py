@@ -85,8 +85,8 @@ def sender_send(file_name):
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
-		full_size =math.ceil(size / 981)
-		checksum_num,check_with_header = cal_check_sum(str(full_size).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
+		check=math.ceil(size / 981)
+		checksum_num,check_with_header = cal_check_sum(str(check).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
 		s.sendto(check_with_header, client_addr)
 		read_file = open(file_name, 'rb')
 		print("file send started")
