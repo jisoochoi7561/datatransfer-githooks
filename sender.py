@@ -65,22 +65,10 @@ def cal_check_sum(data):
 	num = 0
 	while i<len(packet):
 		if i+1>=len(packet):
-			print("There is only one last byte ",end='')
-			print(format(ord(packet.hex()[i]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x"),16)
 		else:
-			print("first byte ",end='')
-			print(format(ord(packet.hex()[i]),"x"))
-			print("second byte ",end='')
-			print(format(ord(packet.hex()[i+1]),"x"))
-			print("concated bytes ",end='')
-			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-		print("so far, calculation finished: ",end='')
-		print(hex(num))
 		num = (num>>16) + (num&0xffff);
-		print("added carryBit: ",end='')
-		print(hex(num))
 		i+=2
 	mask = 0b1111111111111111
 	print("final num is: ",end='')
@@ -100,7 +88,7 @@ def sender_send(file_name):
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
-		check =math.ceil(size / 984)
+		check =math.ceil(size / 981)
 		check_with_header = cal_check_sum(str(check).encode('utf-8'))
 		print("check send started: ",end='')
 		print(check)
@@ -109,7 +97,7 @@ def sender_send(file_name):
 		read_file = open(file_name, 'rb')
 		print("file send started")
 		while check!=0:
-			chunk_file = read_file.read(984)
+			chunk_file = read_file.read(981)
 			data_with_header = cal_check_sum(chunk_file)
 			s.sendto(data_with_header, client_addr)
 			check-=1
