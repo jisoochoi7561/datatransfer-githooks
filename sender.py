@@ -83,7 +83,7 @@ def cal_check_sum(data):
 def sender_send(file_name):
 	#
 	# Implement in the order mentioned in the silde and video.
-	frame_num = 0
+	frame_num = 0;received_ack=0;
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size

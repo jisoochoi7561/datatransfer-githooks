@@ -77,9 +77,9 @@ if receiver_exist_msg == 'Exist':
     while recv_count != 0:
         checksum, addr = s.recvfrom(1024)
         checksum = int(checksum.decode('utf-8'))
-        data, addr = s.recvfrom(1024)
-        data = check_checksum(data,checksum)
-        to_write.write(data)
+        data, addr = s.recvfrom(1024);rowdata=data[1:];received_data_num=int(data[0].encode('utf-8'))
+        to_write_data = check_checksum(rowdata,checksum)
+        to_write.write(to_write_data)
         recv_count-=1
 
     to_write.close()
