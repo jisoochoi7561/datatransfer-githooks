@@ -68,13 +68,13 @@ def stop_and_wait():
 		data,addr = s.recvfrom(1024)
 		rowdata=data[1:];
 		received_data_num=int(data[0]);
-			if received_data_num == ack :
-				if ack == 0:
-					ack = 1
-				else ack =0
-				return true,rowdata
-			else:
-				return false,rowdata
+		if received_data_num == ack :
+			if ack == 0:
+				ack = 1
+			else ack =0
+			return true,rowdata
+		else:
+			return false,rowdata
 	except s.timeout:
 		s.sendto('NAK'.encode(),(host,port))
 		return stop_and_wait()
