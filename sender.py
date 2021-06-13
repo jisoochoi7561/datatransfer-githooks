@@ -110,9 +110,8 @@ def sender_send(file_name):
 		while my_check!=0:
 			chunk_file = read_file.read(981)
 			checksum_tosend,data_with_header = cal_check_sum(chunk_file);
-			actual_data=buffer_frame_num.encode()+data_with_header;
 			stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), client_addr);
-			stop_and_wait(actual_data, client_addr)
+			stop_and_wait(buffer_frame_num.encode() + data_with_header, client_addr)
 			my_check-=1
 		read_file.close()
 		print("file send ended")

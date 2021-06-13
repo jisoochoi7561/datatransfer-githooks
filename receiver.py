@@ -53,17 +53,21 @@ def stop_and_wait():
         print("received_data_num is",received_data_num)
         print("and my requested num is",ack)
         if received_data_num == ack :
+            print("transfer succeded")
             if ack == '000':
                 ack = '001'
             else: ack = '000'
+            print("ack change")
             s.sendto(ack.encode(), (host, port))
             print("sended ack:",ack)
             return True,rowdata
         else:
+            print("transfer failed")
             s.sendto(ack.encode(), (host, port))
             print("sended ack:", ack)
             return False,rowdata
     except socket.timeout:
+        print("transfer timeout")
         s.sendto('NAK'.encode(),(host,port))
         print("sended ack:", "NAK")
         return stop_and_wait()
@@ -83,9 +87,10 @@ print("====================================")
 while recv_count != 0:
     success,checksum = stop_and_wait()
     checksum = int(checksum.decode('utf-8'))
+    print("got the checksum:",hex(checksum))
     if success:
-        success,data = stop_and_wait()
-        if success:
+        success2,data = stop_and_wait()
+        if success2:
             to_write_data = check_checksum(data,checksum)
             to_write.write(to_write_data)
             recv_count-=1
