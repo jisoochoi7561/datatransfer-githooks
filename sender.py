@@ -133,4 +133,5 @@ if __name__ == "__main__":
 	text = data.decode('utf8')
 
 	if text == '201902765':
+		print("connection connected")
 		sender_send("speech_script.txt")
