@@ -24,15 +24,20 @@ def check_checksum(rowdata,checksum):
         num = (num>>16) + (num&0xffff);
         i+=2
     mask = 0b1111111111111111
+    print("final num ",end='')
+    print(hex(num))
     num = num^mask
     print("recievd checksum ",end='')
     print(hex(checksum))
     print("calculated checksum ",end='')
     print(hex(num))
+    if hex(checksum) != hex(num):
+        print("checksum error")
+        sys.exit()
     return rowdata[20:]
 
 
-student_id = input()
+file_name = input()
 # print("filename is "+ file_name)
 
 
@@ -43,7 +48,7 @@ port = 8000
 s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 #
 # send to sender
-s.sendto(student_id.encode(),(host,port))
+s.sendto(("receive "+file_name).encode(),(host,port))
 # print("sended message: receive "+file_name)
 # "receive " + file_name
 #

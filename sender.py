@@ -9,7 +9,6 @@ import struct
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
-	s.settimeout(10)
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
@@ -56,20 +55,38 @@ def cal_check_sum(data):
 
 	pseudo_header =  b_src_ip+b_dst_ip+b_zeroes+b_protocol+b_udp_length
 	udp_header = src_port+dst_port+b_length+b_check_sum
+
+
 	packet = pseudo_header+udp_header+data
+	print("packet is",end = '')
+	print(packet)
 
 	i=0
 	num = 0
 	while i<len(packet):
 		if i+1>=len(packet):
+			print("There is only one last byte ",end='')
+			print(format(ord(packet.hex()[i]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x"),16)
 		else:
+			print("first byte ",end='')
+			print(format(ord(packet.hex()[i]),"x"))
+			print("second byte ",end='')
+			print(format(ord(packet.hex()[i+1]),"x"))
+			print("concated bytes ",end='')
+			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
+		print("so far, calculation finished: ",end='')
+		print(hex(num))
 		num = (num>>16) + (num&0xffff);
+		print("added carryBit: ",end='')
+		print(hex(num))
 		i+=2
 	mask = 0b1111111111111111
+	print("final num is: ",end='')
+	print(hex(num))
 	num = num^mask
-	print("final checksum: ",end='')
+	print("reverse num so that final checksum: ",end='')
 	print(hex(num))
 	b_check_sum = struct.pack('>H',num)
 	# send checksum
@@ -78,15 +95,12 @@ def cal_check_sum(data):
 	packet = pseudo_header+udp_header+data
 	return packet
 def sender_send(file_name):
-	frame_num = "0"
-	actual_frame = ""
-	received_ack = "0"
 	#
 	# Implement in the order mentioned in the silde and video.
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
-		check =math.ceil(size / 981)
+		check =math.ceil(size / 984)
 		check_with_header = cal_check_sum(str(check).encode('utf-8'))
 		print("check send started: ",end='')
 		print(check)
@@ -95,10 +109,8 @@ def sender_send(file_name):
 		read_file = open(file_name, 'rb')
 		print("file send started")
 		while check!=0:
-			chunk_file = read_file.read(981)
+			chunk_file = read_file.read(984)
 			data_with_header = cal_check_sum(chunk_file)
-			print("sizeofframe_num")
-			print(len(frame_num.encode('utf-8'))
 			s.sendto(data_with_header, client_addr)
 			check-=1
 		read_file.close()
@@ -121,5 +133,5 @@ if __name__ == "__main__":
 	text = data.decode('utf8')
 	handler = text.split()
 
-	if handler[0] == '201902765':
-		sender_send("speech_script.txt")
+	if handler[0] == 'receive':
+		sender_send(handler[1])
