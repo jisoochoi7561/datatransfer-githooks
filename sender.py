@@ -9,12 +9,33 @@ import struct
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
-	my_buffer = []
+	buffer_frame_num = 0
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
 
-
+def stop_and_wait(data,address):
+	global buffer_frame_num
+	print("sending index:")
+	print(buffer_frame_num)
+	s.sendto(data,address);
+	try:
+		received_ack, client_addr = s.recvfrom(1024)
+		received_ack = (recevied_ack.encode('utf-8'))
+		print("redeived_ack:")
+		print(received_ack)
+		if received_ack == 'NAK':
+			print("NAK received: resend")
+			stop_and_wait(data,address)
+		else:
+			received_ack = int(received_ack)
+			if buffer_frame_num == 0 and received_ack == 1:
+				buffer_frame_num=1
+			elif buffer_frame_num == 1 and received_ack == 0:
+				buffer_frame_num = 0
+	except socket.timeout:
+		print("time error: resend")
+		stop_and_wait(data,address)
 def check_md5(path):
 	f = open(path, 'rb')
 	data = f.read()
@@ -82,19 +103,18 @@ def cal_check_sum(data):
 def sender_send(file_name):
 	#
 	# Implement in the order mentioned in the silde and video.
-	frame_num = 0;received_ack=0;
 	if os.path.isfile(file_name):
-		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
 		my_check = math.ceil(size / 981)
-		checksum_num,check_with_header = cal_check_sum(str(my_check).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
-		s.sendto(check_with_header, client_addr)
+		checksum_num,check_with_header = cal_check_sum(str(my_check).encode('utf-8'));stop_and_wait(str(checksum_num).encode('utf-8'), client_addr);
+		stop_and_wait(check_with_header, client_addr)
 		read_file = open(file_name, 'rb')
 		print("file send started")
 		while my_check!=0:
 			chunk_file = read_file.read(981)
-			checksum_tosend,data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;s.sendto(str(checksum_tosend).encode('utf-8'), client_addr);
-			s.sendto(actual_data, client_addr)
+			checksum_tosend,data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;
+			stop_and_wait(str(checksum_tosend).encode('utf-8'), client_addr);
+			stop_and_wait(actual_data, client_addr)
 			my_check-=1
 		read_file.close()
 		print("file send ended")

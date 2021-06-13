@@ -4,6 +4,7 @@ import sys
 import hashlib
 import struct
 
+ack = 0
 def check_md5_hash(path):
     f = open(path, 'rb')
     data = f.read()
@@ -54,20 +55,35 @@ s.sendto(stu_id.encode(),(host,port))
 #
 # receiver exist msg
 
-data, addr = s.recvfrom(1024)
-receiver_exist_msg=data.decode('utf-8')
 # print("received message: "+receiver_exist_msg)
 
 #
 
 #
 # if receiver exist msg:
-if receiver_exist_msg == 'Exist':
+
+
+def stop_and_wait():
+	try:
+		data,addr = s.recvfrom(1024)
+		rowdata=data[1:];
+		received_data_num=int(data[0]);
+			if received_data_num == ack :
+				if ack == 0:
+					ack = 1
+				else ack =0
+				return true,rowdata
+			else:
+				return false,rowdata
+	except s.timeout:
+		s.sendto('NAK'.encode(),(host,port))
+		return stop_and_wait()
+if true:
 
     to_write = open("Received_script.txt", "wb")
-    checksum, addr = s.recvfrom(1024)
-    checksum = int(checksum.decode('utf-8'))
-    data, addr = s.recvfrom(1024)
+	success,checksum = stop_and_wait()
+	checksum = int(checksum.decode('utf-8'))
+    success,data = s.recvfrom(1024)
     data = check_checksum(data,checksum)
     recv_count = int(data.decode('utf-8'))
     print("recv_count is ",end = '')
@@ -75,12 +91,14 @@ if receiver_exist_msg == 'Exist':
     print("====================================")
     # print("recv count: "+str(recv_count))
     while recv_count != 0:
-        checksum, addr = s.recvfrom(1024)
+        success,checksum = s.recvfrom(1024)
         checksum = int(checksum.decode('utf-8'))
-        data, addr = s.recvfrom(1024);rowdata=data[1:];received_data_num=int(data[0]);print(received_data_num);
-        to_write_data = check_checksum(rowdata,checksum)
-        to_write.write(to_write_data)
-        recv_count-=1
+        if success:
+			success,data = s.recvfrom(1024);
+			if success:
+				to_write_data = check_checksum(data,checksum)
+				to_write.write(to_write_data)
+				recv_count-=1
 
     to_write.close()
 #
