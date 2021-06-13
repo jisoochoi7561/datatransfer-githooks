@@ -68,10 +68,8 @@ def cal_check_sum(data):
 		num = (num>>16) + (num&0xffff);
 		i+=2
 	mask = 0b1111111111111111
-	print("final num is: ",end='')
-	print(hex(num))
 	num = num^mask
-	print("reverse num so that final checksum: ",end='')
+	print("final checksum: ",end='')
 	print(hex(num))
 	b_check_sum = struct.pack('>H',num)
 	# send checksum
@@ -82,6 +80,7 @@ def cal_check_sum(data):
 def sender_send(file_name):
 	frame_num = "0"
 	actual_frame = ""
+	received_ack = "0"
 	#
 	# Implement in the order mentioned in the silde and video.
 	if os.path.isfile(file_name):
@@ -98,7 +97,9 @@ def sender_send(file_name):
 		while check!=0:
 			chunk_file = read_file.read(981)
 			data_with_header = cal_check_sum(chunk_file)
-			actual_frame = data_with_header
+			print("sizeofframe_num")
+			print(len(frame_num.encode('utf-8'))
+			actual_frame = frame_num.encode('utf-8')+data_with_header
 			s.sendto(actual_frame, client_addr)
 			check-=1
 		read_file.close()
