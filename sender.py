@@ -118,7 +118,6 @@ if __name__ == "__main__":
 		sys.exit()
 
 	text = data.decode('utf8')
-	handler = text.split()
 
-	if handler[0] == '201902765':
+	if text == '201902765':
 		sender_send("speech_script.txt")
