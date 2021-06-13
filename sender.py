@@ -98,7 +98,7 @@ def sender_send(file_name):
 		while check!=0:
 			chunk_file = read_file.read(981)
 			data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;
-			s.sendto(data_with_header, client_addr)
+			s.sendto(actual_data, client_addr)
 			check-=1
 		read_file.close()
 		print("file send ended")
