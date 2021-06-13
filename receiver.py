@@ -4,7 +4,7 @@ import sys
 import hashlib
 import struct
 
-ack = 0
+ack = "000"
 host = ("34.64.149.188")
 port = 8000
 s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10);
@@ -48,16 +48,16 @@ def stop_and_wait():
     global ack
     try:
         data,addr = s.recvfrom(1024)
-        rowdata=data[1:];
-        received_data_num=int(data[0]);
+        rowdata=data[3:];
+        received_data_num=data[0:3].decode('utf-8');
         if received_data_num == ack :
-            if ack == 0:
-                ack = 1
-            else: ack =0
-            s.sendto(str(ack).encode(), (host, port))
+            if ack == '000':
+                ack = '001'
+            else: ack = '000'
+            s.sendto(ack.encode(), (host, port))
             return True,rowdata
         else:
-            s.sendto(str(ack).encode(), (host, port))
+            s.sendto(ack.encode(), (host, port))
             return False,rowdata
     except s.timeout:
         s.sendto('NAK'.encode(),(host,port))

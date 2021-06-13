@@ -9,7 +9,7 @@ import struct
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
-	buffer_frame_num = 0
+	buffer_frame_num = '000'
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
@@ -28,11 +28,10 @@ def stop_and_wait(data,address):
 			print("NAK received: resend")
 			stop_and_wait(data,address)
 		else:
-			received_ack = int(received_ack)
-			if buffer_frame_num == 0 and received_ack == 1:
-				buffer_frame_num=1
-			elif buffer_frame_num == 1 and received_ack == 0:
-				buffer_frame_num = 0
+			if buffer_frame_num == '000' and received_ack == '001':
+				buffer_frame_num='001'
+			elif buffer_frame_num == '001' and received_ack == '000':
+				buffer_frame_num = '000'
 	except socket.timeout:
 		print("time error: resend")
 		stop_and_wait(data,address)
