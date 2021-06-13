@@ -24,8 +24,6 @@ def check_checksum(rowdata,checksum):
         num = (num>>16) + (num&0xffff);
         i+=2
     mask = 0b1111111111111111
-    print("final num ",end='')
-    print(hex(num))
     num = num^mask
     print("recievd checksum ",end='')
     print(hex(checksum))

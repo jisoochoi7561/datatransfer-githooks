@@ -65,28 +65,14 @@ def cal_check_sum(data):
 	num = 0
 	while i<len(packet):
 		if i+1>=len(packet):
-			print("There is only one last byte ",end='')
-			print(format(ord(packet.hex()[i]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x"),16)
 		else:
-			print("first byte ",end='')
-			print(format(ord(packet.hex()[i]),"x"))
-			print("second byte ",end='')
-			print(format(ord(packet.hex()[i+1]),"x"))
-			print("concated bytes ",end='')
-			print(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"))
 			num += int(format(ord(packet.hex()[i]),"x")+format(ord(packet.hex()[i+1]),"x"),16)
-		print("so far, calculation finished: ",end='')
-		print(hex(num))
 		num = (num>>16) + (num&0xffff);
-		print("added carryBit: ",end='')
-		print(hex(num))
 		i+=2
 	mask = 0b1111111111111111
-	print("final num is: ",end='')
-	print(hex(num))
 	num = num^mask
-	print("reverse num so that final checksum: ",end='')
+	print("final checksum: ",end='')
 	print(hex(num))
 	b_check_sum = struct.pack('>H',num)
 	# send checksum
