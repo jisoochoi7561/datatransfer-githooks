@@ -21,7 +21,7 @@ def stop_and_wait(data,address):
 	s.sendto(data,address);
 	try:
 		received_ack, client_addr = s.recvfrom(1024)
-		received_ack = (recevied_ack.encode('utf-8'))
+		received_ack = (received_ack.encode('utf-8'))
 		print("redeived_ack:")
 		print(received_ack)
 		if received_ack == 'NAK':

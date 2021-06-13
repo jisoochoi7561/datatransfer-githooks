@@ -64,43 +64,46 @@ s.sendto(stu_id.encode(),(host,port))
 
 
 def stop_and_wait():
-	try:
-		data,addr = s.recvfrom(1024)
-		rowdata=data[1:];
-		received_data_num=int(data[0]);
-		if received_data_num == ack :
-			if ack == 0:
-				ack = 1
-			else ack =0
-			return true,rowdata
-		else:
-			return false,rowdata
-	except s.timeout:
-		s.sendto('NAK'.encode(),(host,port))
-		return stop_and_wait()
-if true:
+    global ack
+    try:
+        data,addr = s.recvfrom(1024)
+        rowdata=data[1:];
+        received_data_num=int(data[0]);
+        if received_data_num == ack :
+            if ack == 0:
+                ack = 1
+            else: ack =0
+            s.sendto(str(ack).encode(), (host, port))
+            return True,rowdata
+        else:
+            s.sendto(str(ack).encode(), (host, port))
+            return False,rowdata
+    except s.timeout:
+        s.sendto('NAK'.encode(),(host,port))
+        return stop_and_wait()
 
+if True:
     to_write = open("Received_script.txt", "wb")
-	success,checksum = stop_and_wait()
-	checksum = int(checksum.decode('utf-8'))
-    success,data = s.recvfrom(1024)
-    data = check_checksum(data,checksum)
-    recv_count = int(data.decode('utf-8'))
-    print("recv_count is ",end = '')
-    print(recv_count)
-    print("====================================")
-    # print("recv count: "+str(recv_count))
-    while recv_count != 0:
-        success,checksum = s.recvfrom(1024)
-        checksum = int(checksum.decode('utf-8'))
+    success,checksum = stop_and_wait()
+    checksum = int(checksum.decode('utf-8'))
+success,data = stop_and_wait()
+data = check_checksum(data,checksum)
+recv_count = int(data.decode('utf-8'))
+print("recv_count is ",end = '')
+print(recv_count)
+print("====================================")
+# print("recv count: "+str(recv_count))
+while recv_count != 0:
+    success,checksum = stop_and_wait()
+    checksum = int(checksum.decode('utf-8'))
+    if success:
+        success,data = stop_and_wait()
         if success:
-			success,data = s.recvfrom(1024);
-			if success:
-				to_write_data = check_checksum(data,checksum)
-				to_write.write(to_write_data)
-				recv_count-=1
+            to_write_data = check_checksum(data,checksum)
+            to_write.write(to_write_data)
+            recv_count-=1
 
-    to_write.close()
+to_write.close()
 #
 
 #
