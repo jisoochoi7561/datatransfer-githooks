@@ -75,11 +75,9 @@ def cal_check_sum(data):
 	print("final checksum: ",end='')
 	print(hex(num))
 	b_check_sum = struct.pack('>H',num)
-	# send checksum
-	s.sendto(str(num).encode('utf-8'), client_addr)
 	udp_header = src_port+dst_port+b_length+b_check_sum
 	packet = pseudo_header+udp_header+data
-	return packet
+	return num,packet
 def sender_send(file_name):
 	#
 	# Implement in the order mentioned in the silde and video.
@@ -87,17 +85,14 @@ def sender_send(file_name):
 	if os.path.isfile(file_name):
 		s.sendto("Exist".encode('utf-8'), client_addr)
 		size = os.stat(file_name).st_size
-		check =math.ceil(size / 981)
-		check_with_header = cal_check_sum(str(check).encode('utf-8'))
-		print("check send started: ",end='')
-		print(check)
+		full_size =math.ceil(size / 981)
+		checksum_num,check_with_header = cal_check_sum(str(full_size).encode('utf-8'));s.sendto(str(checksum_num).encode('utf-8'), client_addr);
 		s.sendto(check_with_header, client_addr)
-		print("check send ended")
 		read_file = open(file_name, 'rb')
 		print("file send started")
 		while check!=0:
 			chunk_file = read_file.read(981)
-			data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;
+			checksum_tosend,data_with_header = cal_check_sum(chunk_file);actual_data=bytes([frame_num])+data_with_header;s.sendto(str(checksum_tosend).encode('utf-8'), client_addr);
 			s.sendto(actual_data, client_addr)
 			check-=1
 		read_file.close()
