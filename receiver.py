@@ -32,7 +32,7 @@ def check_checksum(rowdata,checksum):
     return rowdata[20:]
 
 
-file_name = input()
+student_id = input()
 # print("filename is "+ file_name)
 
 
@@ -43,7 +43,7 @@ port = 8000
 s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 #
 # send to sender
-s.sendto(("receive "+file_name).encode(),(host,port))
+s.sendto(student_id.encode(),(host,port))
 # print("sended message: receive "+file_name)
 # "receive " + file_name
 #
