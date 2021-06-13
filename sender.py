@@ -9,6 +9,7 @@ import struct
 try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
+	s.settimeout(10)
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
@@ -79,6 +80,8 @@ def cal_check_sum(data):
 	packet = pseudo_header+udp_header+data
 	return packet
 def sender_send(file_name):
+	frame_num = "0"
+	actual_frame = ""
 	#
 	# Implement in the order mentioned in the silde and video.
 	if os.path.isfile(file_name):
@@ -95,7 +98,8 @@ def sender_send(file_name):
 		while check!=0:
 			chunk_file = read_file.read(981)
 			data_with_header = cal_check_sum(chunk_file)
-			s.sendto(data_with_header, client_addr)
+			actual_frame = data_with_header
+			s.sendto(actual_frame, client_addr)
 			check-=1
 		read_file.close()
 		print("file send ended")
