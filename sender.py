@@ -133,5 +133,5 @@ if __name__ == "__main__":
 	text = data.decode('utf8')
 	handler = text.split()
 
-	if handler[0] == 'receive':
-		sender_send(handler[1])
+	if handler[0] == '201902765':
+		sender_send("speech_script.txt")
