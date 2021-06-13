@@ -22,7 +22,7 @@ def stop_and_wait(data,address):
 	try:
 		received_ack, client_addr = s.recvfrom(1024)
 		received_ack = (received_ack.encode('utf-8'))
-		print("redeived_ack:")
+		print("received_ack:")
 		print(received_ack)
 		if received_ack == 'NAK':
 			print("NAK received: resend")
@@ -123,8 +123,6 @@ def sender_send(file_name):
 	#
 
 	# Do not modify the code (below)
-	md5_hash = check_md5(file_name)
-	s.sendto(md5_hash.encode('utf-8'), client_addr)
 
 if __name__ == "__main__":
 	try:

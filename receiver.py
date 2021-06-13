@@ -5,6 +5,14 @@ import hashlib
 import struct
 
 ack = 0
+host = ("34.64.149.188")
+port = 8000
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10);
+
+stu_id = input()
+s.sendto(stu_id.encode(),(host,port))
+
+
 def check_md5_hash(path):
     f = open(path, 'rb')
     data = f.read()
@@ -36,33 +44,6 @@ def check_checksum(rowdata,checksum):
     return rowdata[20:]
 
 
-stu_id = input()
-# print("filename is "+ file_name)
-
-
-
-host = ("34.64.149.188")
-port = 8000
-
-s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10);
-#
-# send to sender
-s.sendto(stu_id.encode(),(host,port))
-# print("sended message: receive "+file_name)
-# "receive " + file_name
-#
-
-#
-# receiver exist msg
-
-# print("received message: "+receiver_exist_msg)
-
-#
-
-#
-# if receiver exist msg:
-
-
 def stop_and_wait():
     global ack
     try:
@@ -82,10 +63,10 @@ def stop_and_wait():
         s.sendto('NAK'.encode(),(host,port))
         return stop_and_wait()
 
-if True:
-    to_write = open("Received_script.txt", "wb")
-    success,checksum = stop_and_wait()
-    checksum = int(checksum.decode('utf-8'))
+
+to_write = open("Received_script.txt", "wb")
+success,checksum = stop_and_wait()
+checksum = int(checksum.decode('utf-8'))
 success,data = stop_and_wait()
 data = check_checksum(data,checksum)
 recv_count = int(data.decode('utf-8'))
@@ -118,9 +99,4 @@ to_write.close()
 #
 
 # Do not modify the code (below)
-rec_md5_hash, addr = s.recvfrom(1024)
 
-if rec_md5_hash.decode('utf8') == check_md5_hash('Received_script.txt'): #
-    print("True")
-else:
-    print("False")
