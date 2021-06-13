@@ -50,23 +50,29 @@ def stop_and_wait():
         data,addr = s.recvfrom(1024)
         rowdata=data[3:];
         received_data_num=data[0:3].decode('utf-8');
+        print("received_data_num is",received_data_num)
+        print("and my requested num is",ack)
         if received_data_num == ack :
             if ack == '000':
                 ack = '001'
             else: ack = '000'
             s.sendto(ack.encode(), (host, port))
+            print("sended ack:",ack)
             return True,rowdata
         else:
             s.sendto(ack.encode(), (host, port))
+            print("sended ack:", ack)
             return False,rowdata
     except socket.timeout:
         s.sendto('NAK'.encode(),(host,port))
+        print("sended ack:", "NAK")
         return stop_and_wait()
 
 
 to_write = open("Received_script.txt", "wb")
 success,checksum = stop_and_wait()
 checksum = int(checksum.decode('utf-8'))
+print("my check sum of count",checksum)
 success,data = stop_and_wait()
 data = check_checksum(data,checksum)
 recv_count = int(data.decode('utf-8'))
@@ -85,18 +91,3 @@ while recv_count != 0:
             recv_count-=1
 
 to_write.close()
-#
-
-#
-# file receive ==> open("Received_script.txt", "wb") # Fixed file name
-# Receives the standard count for dividing a file from the server
-# ==> while recv_count != 0:
-# Continuously receive and write file contents
-#
-
-#
-# file_name.close()
-#
-
-# Do not modify the code (below)
-
