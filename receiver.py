@@ -93,7 +93,6 @@ while recv_count != 0:
         port = 8000
     success,checksum = stop_and_wait()
     checksum = int(checksum.decode('utf-8'))
-    print("got the checksum:",hex(checksum))
     if success:
         success2,data = stop_and_wait()
         if success2:
