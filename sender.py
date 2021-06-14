@@ -10,7 +10,7 @@ try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
 	buffer_frame_num = '000'
-	s.settimeout(5)
+	s.settimeout(10)
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
