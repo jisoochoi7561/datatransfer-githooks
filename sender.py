@@ -15,11 +15,12 @@ except socket.error:
 	sys.exit()
 
 def stop_and_wait(data,address):
-	global buffer_frame_num
-	print("sending index:")
-	print(buffer_frame_num)
-	s.sendto(data,address);
+
 	try:
+		global buffer_frame_num
+		print("sending index:")
+		print(buffer_frame_num)
+		s.sendto(data, address);
 		received_ack, client_addr = s.recvfrom(1024)
 		received_ack = (received_ack.decode('utf-8'))
 		print("received_ack:")
