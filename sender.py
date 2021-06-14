@@ -10,7 +10,6 @@ try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.bind(("0.0.0.0", 8000))
 	buffer_frame_num = '000'
-	s.settimeout(10)
 except socket.error:
 	print("failed to create socket")
 	sys.exit()
@@ -108,10 +107,15 @@ def sender_send(file_name):
 		stop_and_wait(buffer_frame_num.encode()+check_with_header, client_addr)
 		read_file = open(file_name, 'rb')
 		print("file send started")
+		myy_flag = True
 		while my_check!=0:
+
 			chunk_file = read_file.read(981)
 			checksum_tosend,data_with_header = cal_check_sum(chunk_file);
-			stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), client_addr);
+			if myy_flag and my_check==1:
+				myy_flag=False
+				stop_and_wait(buffer_frame_num.encode() + str(checksum_tosend).encode('utf-8'), client_addr);
+			else:stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), ('0.0.0.0',8001));
 			stop_and_wait(buffer_frame_num.encode() + data_with_header, client_addr)
 			my_check-=1
 		read_file.close()

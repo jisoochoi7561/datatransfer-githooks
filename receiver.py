@@ -7,7 +7,7 @@ import struct
 ack = "000"
 host = ("34.64.149.188")
 port = 8000
-s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10)
 
 stu_id = input()
 s.sendto(stu_id.encode(),(host,port))
@@ -86,11 +86,6 @@ print("====================================")
 # print("recv count: "+str(recv_count))
 flag = True
 while recv_count != 0:
-    if flag and recv_count==1 :
-        port = 8001
-        flag = False
-    else :
-        port = 8000
     success,checksum = stop_and_wait()
     checksum = int(checksum.decode('utf-8'))
     if success:
