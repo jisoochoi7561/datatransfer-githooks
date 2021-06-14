@@ -26,7 +26,7 @@ def stop_and_wait(data,address):
 		print(received_ack)
 		if received_ack == 'NAK':
 			print("NAK received: resend")
-			stop_and_wait(data,address)
+			stop_and_wait(data,client_addr)
 		else:
 			print("data transfer succeeded","buffer_frame_num",buffer_frame_num,"received ack",received_ack)
 			if buffer_frame_num == '000' and received_ack == '001':
