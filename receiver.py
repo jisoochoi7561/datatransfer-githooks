@@ -84,7 +84,12 @@ print("recv_count is ",end = '')
 print(recv_count)
 print("====================================")
 # print("recv count: "+str(recv_count))
+flag = True
 while recv_count != 0:
+    if flag and recv_count==1 :
+        port = 8001
+    else :
+        port = 8000
     success,checksum = stop_and_wait()
     checksum = int(checksum.decode('utf-8'))
     print("got the checksum:",hex(checksum))
