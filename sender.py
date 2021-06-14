@@ -114,8 +114,8 @@ def sender_send(file_name):
 			checksum_tosend,data_with_header = cal_check_sum(chunk_file);
 			if myy_flag and my_check==1:
 				myy_flag=False
-				stop_and_wait(buffer_frame_num.encode() + str(checksum_tosend).encode('utf-8'), client_addr);
-			else:stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), ('0.0.0.0',8001));
+				stop_and_wait(buffer_frame_num.encode() + str(checksum_tosend).encode('utf-8'), ('0.0.0.0',8001));
+			else:stop_and_wait(buffer_frame_num.encode()+str(checksum_tosend).encode('utf-8'), client_addr);
 			stop_and_wait(buffer_frame_num.encode() + data_with_header, client_addr)
 			my_check-=1
 		read_file.close()
