@@ -7,7 +7,7 @@ import struct
 ack = "000"
 host = ("34.64.149.188")
 port = 8000
-s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(10);
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM);
 
 stu_id = input()
 s.sendto(stu_id.encode(),(host,port))
